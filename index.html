@@ -28,46 +28,57 @@
             animation: float 3s ease-in-out infinite;
         }
     </style>
-    <!-- Recarga automática cada 30 segundos -->
     <script>
+        // Recarga automática cada 30 segundos manteniendo la pestaña actual
         setTimeout(function() {
             location.reload(true);
         }, 30000);
 
         function cambiarPestana(pestana) {
+            localStorage.setItem('pestana_activa', pestana);
+            const seccionGrupos = document.getElementById('seccion-grupos');
+            const seccionEliminatorias = document.getElementById('seccion-eliminatorias');
+            const btnGrupos = document.getElementById('btn-grupos');
+            const btnEliminatorias = document.getElementById('btn-eliminatorias');
+
             if (pestana === 'grupos') {
-                document.getElementById('seccion-grupos').style.display = 'block';
-                document.getElementById('seccion-eliminatorias').style.display = 'none';
-                document.getElementById('btn-grupos').className = 'bg-[#ccff00] text-gray-950 font-bold px-5 py-2.5 rounded-xl text-sm shadow-lg transition';
-                document.getElementById('btn-eliminatorias').className = 'bg-gray-800 text-gray-300 font-bold px-5 py-2.5 rounded-xl text-sm border border-gray-700 hover:bg-gray-700 transition';
+                seccionGrupos.style.display = 'block';
+                seccionEliminatorias.style.display = 'none';
+                btnGrupos.className = 'bg-[#ccff00] text-gray-950 font-bold px-6 py-2.5 rounded-xl text-sm shadow-lg transition flex items-center gap-2';
+                btnEliminatorias.className = 'bg-gray-900 text-gray-300 font-bold px-6 py-2.5 rounded-xl text-sm border border-gray-800 hover:bg-gray-800 transition flex items-center gap-2';
             } else {
-                document.getElementById('seccion-grupos').style.display = 'none';
-                document.getElementById('seccion-eliminatorias').style.display = 'block';
-                document.getElementById('btn-eliminatorias').className = 'bg-[#ccff00] text-gray-950 font-bold px-5 py-2.5 rounded-xl text-sm shadow-lg transition';
-                document.getElementById('btn-grupos').className = 'bg-gray-800 text-gray-300 font-bold px-5 py-2.5 rounded-xl text-sm border border-gray-700 hover:bg-gray-700 transition';
+                seccionGrupos.style.display = 'none';
+                seccionEliminatorias.style.display = 'block';
+                btnEliminatorias.className = 'bg-[#ccff00] text-gray-950 font-bold px-6 py-2.5 rounded-xl text-sm shadow-lg transition flex items-center gap-2';
+                btnGrupos.className = 'bg-gray-900 text-gray-300 font-bold px-6 py-2.5 rounded-xl text-sm border border-gray-800 hover:bg-gray-800 transition flex items-center gap-2';
             }
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const pestanaGuardada = localStorage.getItem('pestana_activa') || 'grupos';
+            cambiarPestana(pestanaGuardada);
+        });
     </script>
 </head>
 <body class="min-h-screen pb-12">
 
     <!-- Header Principal -->
     <header class="max-w-7xl mx-auto px-4 pt-8 pb-6 text-center">
-        <div class="inline-block bg-[#ccff00]/10 border border-[#ccff00]/30 rounded-full px-4 py-1 text-xs font-semibold tracking-wider text-[#ccff00] uppercase mb-3">
-            🏆 VIII Torneo Benéfico • Club El Estudiante
+        <div class="inline-block bg-[#ccff00]/10 border border-[#ccff00]/30 rounded-full px-5 py-1 text-xs font-bold tracking-wider text-[#ccff00] uppercase mb-3 shadow-inner">
+            🟢 PÁDEL LIVE MATCH
         </div>
         <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-2">
-            CATEGORÍA <span class="neon-text">MASCULINO A</span>
+            🏆 VIII TORNEO BENÉFICO <span class="neon-text">POR ÁLEX Y MARIETE</span>
         </h1>
-        <p class="text-gray-400 text-sm md:text-base">Seguimiento en directo de liguilla, clasificación y eliminatorias</p>
+        <p class="text-cyan-400 text-xs md:text-sm font-bold tracking-wider uppercase">CATEGORÍA MASCULINO A — MARCADOR EN TIEMPO REAL</p>
         
         <!-- Pestañas de Navegación -->
         <div class="flex justify-center gap-3 mt-6">
-            <button id="btn-grupos" onclick="cambiarPestana('grupos')" class="bg-[#ccff00] text-gray-950 font-bold px-5 py-2.5 rounded-xl text-sm shadow-lg transition">
-                Fase de Grupos
+            <button id="btn-grupos" onclick="cambiarPestana('grupos')" class="bg-[#ccff00] text-gray-950 font-bold px-6 py-2.5 rounded-xl text-sm shadow-lg transition flex items-center gap-2">
+                🏸 FASE DE GRUPOS
             </button>
-            <button id="btn-eliminatorias" onclick="cambiarPestana('eliminatorias')" class="bg-gray-800 text-gray-300 font-bold px-5 py-2.5 rounded-xl text-sm border border-gray-700 hover:bg-gray-700 transition">
-                Cuadro Eliminatorias
+            <button id="btn-eliminatorias" onclick="cambiarPestana('eliminatorias')" class="bg-gray-900 text-gray-300 font-bold px-6 py-2.5 rounded-xl text-sm border border-gray-800 hover:bg-gray-800 transition flex items-center gap-2">
+                🏆 CUADRO ELIMINATORIAS
             </button>
         </div>
     </header>
@@ -75,65 +86,65 @@
     <main class="max-w-7xl mx-auto px-4 space-y-10">
 
         <!-- ================= FASE DE GRUPOS ================= -->
-        <div id="seccion-grupos" class="space-y-10">
+        <div id="seccion-grupos" class="space-y-10" style="display: none;">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 
                 <!-- GRUPO 35 -->
                 <div class="space-y-6">
                     <!-- Tabla Clasificación Grupo 35 -->
-                    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl">
-                        <div class="bg-cyan-500 text-gray-950 font-black text-center py-2.5 rounded-xl text-lg uppercase tracking-wider mb-4 shadow-md">
-                            Clasificación Grupo 35
+                    <div class="bg-gray-900/90 border border-gray-800 rounded-2xl p-5 shadow-2xl">
+                        <div class="text-xs font-bold text-[#ccff00] tracking-wider uppercase mb-3 flex items-center gap-2">
+                            🏸 GRUPO 35 — CLASIFICACIÓN
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-sm">
                                 <thead>
-                                    <tr class="text-gray-400 border-b border-gray-800 text-xs">
-                                        <th class="pb-2 text-center w-12">POS</th>
-                                        <th class="pb-2">EQUIPO</th>
-                                        <th class="pb-2 text-center">Jugados</th>
-                                        <th class="pb-2 text-center">Puntos</th>
-                                        <th class="pb-2 text-center">JF</th>
-                                        <th class="pb-2 text-center">JC</th>
-                                        <th class="pb-2 text-center">DIF</th>
+                                    <tr class="text-gray-400 border-b border-gray-800/80 text-xs">
+                                        <th class="pb-2.5 text-center w-12 font-bold">POS</th>
+                                        <th class="pb-2.5 font-bold">EQUIPO</th>
+                                        <th class="pb-2.5 text-center font-bold">PJ</th>
+                                        <th class="pb-2.5 text-center font-bold">PTS</th>
+                                        <th class="pb-2.5 text-center font-bold">JF</th>
+                                        <th class="pb-2.5 text-center font-bold">JC</th>
+                                        <th class="pb-2.5 text-center font-bold">DIF</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-800/50">
-                                    <tr class="bg-cyan-500/10 font-bold">
-                                        <td class="py-3 text-center text-cyan-400">1</td>
-                                        <td class="py-3 text-white">MIGUEL / RAUL</td>
-                                        <td class="py-3 text-center text-gray-300">0</td>
-                                        <td class="py-3 text-center text-[#ccff00]">0</td>
-                                        <td class="py-3 text-center text-gray-300">0</td>
-                                        <td class="py-3 text-center text-gray-300">0</td>
+                                <tbody class="divide-y divide-gray-800/40">
+                                    <tr class="font-bold">
+                                        <td class="py-3 text-center"><span class="bg-yellow-400 text-gray-950 font-black px-2 py-0.5 rounded text-xs">1</span></td>
+                                        <td class="py-3 text-white">MIGUEL/RAUL</td>
+                                        <td class="py-3 text-center text-gray-300">2</td>
+                                        <td class="py-3 text-center text-[#ccff00] font-black">3</td>
+                                        <td class="py-3 text-center text-gray-300">10</td>
+                                        <td class="py-3 text-center text-gray-300">10</td>
                                         <td class="py-3 text-center text-gray-300">0</td>
                                     </tr>
-                                    <tr>
-                                        <td class="py-3 text-center text-gray-400">2</td>
-                                        <td class="py-3 text-white">JORGE / MANUEL</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
-                                        <td class="py-3 text-center text-[#ccff00]">0</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
+                                    <tr class="font-bold">
+                                        <td class="py-3 text-center"><span class="bg-cyan-500 text-gray-950 font-black px-2 py-0.5 rounded text-xs">2</span></td>
+                                        <td class="py-3 text-white">CARLOS/ENRIQUE</td>
+                                        <td class="py-3 text-center text-gray-300">2</td>
+                                        <td class="py-3 text-center text-[#ccff00] font-black">3</td>
+                                        <td class="py-3 text-center text-gray-300">8</td>
+                                        <td class="py-3 text-center text-gray-300">10</td>
+                                        <td class="py-3 text-center text-red-400">-2</td>
                                     </tr>
                                     <tr>
-                                        <td class="py-3 text-center text-gray-400">3</td>
-                                        <td class="py-3 text-white">ADRIAN / DANIEL</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
-                                        <td class="py-3 text-center text-[#ccff00]">0</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
+                                        <td class="py-3 text-center"><span class="text-gray-500 font-bold text-xs">3</span></td>
+                                        <td class="py-3 text-white">JORGE/MANUEL</td>
+                                        <td class="py-3 text-center text-gray-400">1</td>
+                                        <td class="py-3 text-center text-[#ccff00] font-bold">3</td>
+                                        <td class="py-3 text-center text-gray-400">7</td>
+                                        <td class="py-3 text-center text-gray-400">1</td>
+                                        <td class="py-3 text-center text-emerald-400">+6</td>
                                     </tr>
                                     <tr>
-                                        <td class="py-3 text-center text-gray-400">4</td>
-                                        <td class="py-3 text-white">CARLOS / ENRIQUE</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
-                                        <td class="py-3 text-center text-[#ccff00]">0</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
-                                        <td class="py-3 text-center text-gray-400">0</td>
+                                        <td class="py-3 text-center"><span class="text-gray-500 font-bold text-xs">4</span></td>
+                                        <td class="py-3 text-white">ADRIAN/DANIEL</td>
+                                        <td class="py-3 text-center text-gray-400">1</td>
+                                        <td class="py-3 text-center text-[#ccff00] font-bold">0</td>
+                                        <td class="py-3 text-center text-gray-400">1</td>
+                                        <td class="py-3 text-center text-gray-400">5</td>
+                                        <td class="py-3 text-center text-red-400">-4</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -141,59 +152,40 @@
                     </div>
 
                     <!-- Partidos Grupo 35 -->
-                    <div class="bg-emerald-950/40 border border-emerald-900/50 rounded-2xl p-5 shadow-xl">
-                        <div class="bg-emerald-600 text-white font-black text-center py-2.5 rounded-xl text-base uppercase tracking-wider mb-4 shadow-md">
-                            Partidos Grupo 35
+                    <div class="bg-gray-900/90 border border-gray-800 rounded-2xl p-5 shadow-2xl space-y-3">
+                        <div class="text-xs font-bold text-[#ccff00] tracking-wider uppercase mb-3 flex items-center gap-2">
+                            ⚔️ PARTIDOS DEL GRUPO
                         </div>
-                        <div class="space-y-3">
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">16:00 - 16:25</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">CARLOS/ENRIQUE</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">ADRIAN/DANIEL</span>
-                                </div>
-                            </div>
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">16:25 - 16:50</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">JORGE/MANUEL</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">MIGUEL/RAUL</span>
-                                </div>
-                            </div>
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">16:50 - 17:15</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">CARLOS/ENRIQUE</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">MIGUEL/RAUL</span>
-                                </div>
-                            </div>
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">17:15 - 17:40</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">ADRIAN/DANIEL</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">JORGE/MANUEL</span>
-                                </div>
-                            </div>
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">17:40 - 18:05</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">CARLOS/ENRIQUE</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">JORGE/MANUEL</span>
-                                </div>
-                            </div>
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">18:05 - 18:30</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">ADRIAN/DANIEL</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">MIGUEL/RAUL</span>
-                                </div>
-                            </div>
+                        
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">CARLOS/ENRIQUE</span>
+                            <span class="bg-[#ccff00] text-gray-950 font-black px-3 py-1 rounded text-sm shadow">5 - 1</span>
+                            <span class="font-bold text-white w-32 text-right truncate">ADRIAN/DANIEL</span>
+                        </div>
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">JORGE/MANUEL</span>
+                            <span class="bg-[#ccff00] text-gray-950 font-black px-3 py-1 rounded text-sm shadow">7 - 1</span>
+                            <span class="font-bold text-white w-32 text-right truncate">MIGUEL/RAUL</span>
+                        </div>
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">CARLOS/ENRIQUE</span>
+                            <span class="bg-[#ccff00] text-gray-950 font-black px-3 py-1 rounded text-sm shadow">3 - 9</span>
+                            <span class="font-bold text-white w-32 text-right truncate">MIGUEL/RAUL</span>
+                        </div>
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">ADRIAN/DANIEL</span>
+                            <span class="bg-gray-800 text-gray-400 font-bold px-3 py-1 rounded text-xs border border-gray-700">- : -</span>
+                            <span class="font-bold text-white w-32 text-right truncate">JORGE/MANUEL</span>
+                        </div>
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">CARLOS/ENRIQUE</span>
+                            <span class="bg-gray-800 text-gray-400 font-bold px-3 py-1 rounded text-xs border border-gray-700">- : -</span>
+                            <span class="font-bold text-white w-32 text-right truncate">JORGE/MANUEL</span>
+                        </div>
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">ADRIAN/DANIEL</span>
+                            <span class="bg-gray-800 text-gray-400 font-bold px-3 py-1 rounded text-xs border border-gray-700">- : -</span>
+                            <span class="font-bold text-white w-32 text-right truncate">MIGUEL/RAUL</span>
                         </div>
                     </div>
                 </div>
@@ -201,36 +193,27 @@
                 <!-- GRUPO 38 -->
                 <div class="space-y-6">
                     <!-- Tabla Clasificación Grupo 38 -->
-                    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 shadow-xl">
-                        <div class="bg-cyan-500 text-gray-950 font-black text-center py-2.5 rounded-xl text-lg uppercase tracking-wider mb-4 shadow-md">
-                            Clasificación Grupo 38
+                    <div class="bg-gray-900/90 border border-gray-800 rounded-2xl p-5 shadow-2xl">
+                        <div class="text-xs font-bold text-[#ccff00] tracking-wider uppercase mb-3 flex items-center gap-2">
+                            🏸 GRUPO 38 — CLASIFICACIÓN
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-sm">
                                 <thead>
-                                    <tr class="text-gray-400 border-b border-gray-800 text-xs">
-                                        <th class="pb-2 text-center w-12">POS</th>
-                                        <th class="pb-2">EQUIPO</th>
-                                        <th class="pb-2 text-center">Jugados</th>
-                                        <th class="pb-2 text-center">Puntos</th>
-                                        <th class="pb-2 text-center">JF</th>
-                                        <th class="pb-2 text-center">JC</th>
-                                        <th class="pb-2 text-center">DIF</th>
+                                    <tr class="text-gray-400 border-b border-gray-800/80 text-xs">
+                                        <th class="pb-2.5 text-center w-12 font-bold">POS</th>
+                                        <th class="pb-2.5 font-bold">EQUIPO</th>
+                                        <th class="pb-2.5 text-center font-bold">PJ</th>
+                                        <th class="pb-2.5 text-center font-bold">PTS</th>
+                                        <th class="pb-2.5 text-center font-bold">JF</th>
+                                        <th class="pb-2.5 text-center font-bold">JC</th>
+                                        <th class="pb-2.5 text-center font-bold">DIF</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-800/50">
-                                    <tr class="bg-cyan-500/10 font-bold">
-                                        <td class="py-3 text-center text-cyan-400">1</td>
-                                        <td class="py-3 text-white">ALBERTO / MARCOS</td>
-                                        <td class="py-3 text-center text-gray-300">0</td>
-                                        <td class="py-3 text-center text-[#ccff00]">0</td>
-                                        <td class="py-3 text-center text-gray-300">0</td>
-                                        <td class="py-3 text-center text-gray-300">0</td>
-                                        <td class="py-3 text-center text-gray-300">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-3 text-center text-gray-400">2</td>
-                                        <td class="py-3 text-white">DAVID / JAVIER</td>
+                                <tbody class="divide-y divide-gray-800/40">
+                                    <tr class="font-bold">
+                                        <td class="py-3 text-center"><span class="bg-yellow-400 text-gray-950 font-black px-2 py-0.5 rounded text-xs">1</span></td>
+                                        <td class="py-3 text-white">ALBERTO/MARCOS</td>
                                         <td class="py-3 text-center text-gray-400">0</td>
                                         <td class="py-3 text-center text-[#ccff00]">0</td>
                                         <td class="py-3 text-center text-gray-400">0</td>
@@ -238,8 +221,8 @@
                                         <td class="py-3 text-center text-gray-400">0</td>
                                     </tr>
                                     <tr>
-                                        <td class="py-3 text-center text-gray-400">3</td>
-                                        <td class="py-3 text-white">GONZALO / FERNANDO</td>
+                                        <td class="py-3 text-center"><span class="text-gray-500 font-bold text-xs">2</span></td>
+                                        <td class="py-3 text-white">DAVID/JAVIER</td>
                                         <td class="py-3 text-center text-gray-400">0</td>
                                         <td class="py-3 text-center text-[#ccff00]">0</td>
                                         <td class="py-3 text-center text-gray-400">0</td>
@@ -247,8 +230,17 @@
                                         <td class="py-3 text-center text-gray-400">0</td>
                                     </tr>
                                     <tr>
-                                        <td class="py-3 text-center text-gray-400">4</td>
-                                        <td class="py-3 text-white">RODRIGO / SERGIO</td>
+                                        <td class="py-3 text-center"><span class="text-gray-500 font-bold text-xs">3</span></td>
+                                        <td class="py-3 text-white">GONZALO/FERNANDO</td>
+                                        <td class="py-3 text-center text-gray-400">0</td>
+                                        <td class="py-3 text-center text-[#ccff00]">0</td>
+                                        <td class="py-3 text-center text-gray-400">0</td>
+                                        <td class="py-3 text-center text-gray-400">0</td>
+                                        <td class="py-3 text-center text-gray-400">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 text-center"><span class="text-gray-500 font-bold text-xs">4</span></td>
+                                        <td class="py-3 text-white">RODRIGO/SERGIO</td>
                                         <td class="py-3 text-center text-gray-400">0</td>
                                         <td class="py-3 text-center text-[#ccff00]">0</td>
                                         <td class="py-3 text-center text-gray-400">0</td>
@@ -261,59 +253,40 @@
                     </div>
 
                     <!-- Partidos Grupo 38 -->
-                    <div class="bg-emerald-950/40 border border-emerald-900/50 rounded-2xl p-5 shadow-xl">
-                        <div class="bg-emerald-600 text-white font-black text-center py-2.5 rounded-xl text-base uppercase tracking-wider mb-4 shadow-md">
-                            Partidos Grupo 38
+                    <div class="bg-gray-900/90 border border-gray-800 rounded-2xl p-5 shadow-2xl space-y-3">
+                        <div class="text-xs font-bold text-[#ccff00] tracking-wider uppercase mb-3 flex items-center gap-2">
+                            ⚔️ PARTIDOS DEL GRUPO
                         </div>
-                        <div class="space-y-3">
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">16:00 - 16:25</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">RODRIGO/SERGIO</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">GONZALO/FERNANDO</span>
-                                </div>
-                            </div>
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">16:25 - 16:50</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">DAVID/JAVIER</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">ALBERTO/MARCOS</span>
-                                </div>
-                            </div>
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">16:50 - 17:15</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">RODRIGO/SERGIO</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">ALBERTO/MARCOS</span>
-                                </div>
-                            </div>
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">17:15 - 17:40</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">GONZALO/FERNANDO</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">DAVID/JAVIER</span>
-                                </div>
-                            </div>
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">17:40 - 18:05</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">RODRIGO/SERGIO</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">DAVID/JAVIER</span>
-                                </div>
-                            </div>
-                            <div class="bg-emerald-900/30 border border-emerald-800/50 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                <span class="text-xs font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md">18:05 - 18:30</span>
-                                <div class="flex items-center gap-3 text-center text-sm font-medium">
-                                    <span class="text-right w-36 text-white">GONZALO/FERNANDO</span>
-                                    <span class="bg-gray-900 border border-emerald-700/50 px-3 py-1 rounded font-mono font-bold text-[#ccff00]">- : -</span>
-                                    <span class="text-left w-36 text-white">ALBERTO/MARCOS</span>
-                                </div>
-                            </div>
+                        
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">RODRIGO/SERGIO</span>
+                            <span class="bg-gray-800 text-gray-400 font-bold px-3 py-1 rounded text-xs border border-gray-700">- : -</span>
+                            <span class="font-bold text-white w-32 text-right truncate">GONZALO/FERNANDO</span>
+                        </div>
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">DAVID/JAVIER</span>
+                            <span class="bg-gray-800 text-gray-400 font-bold px-3 py-1 rounded text-xs border border-gray-700">- : -</span>
+                            <span class="font-bold text-white w-32 text-right truncate">ALBERTO/MARCOS</span>
+                        </div>
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">RODRIGO/SERGIO</span>
+                            <span class="bg-gray-800 text-gray-400 font-bold px-3 py-1 rounded text-xs border border-gray-700">- : -</span>
+                            <span class="font-bold text-white w-32 text-right truncate">ALBERTO/MARCOS</span>
+                        </div>
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">GONZALO/FERNANDO</span>
+                            <span class="bg-gray-800 text-gray-400 font-bold px-3 py-1 rounded text-xs border border-gray-700">- : -</span>
+                            <span class="font-bold text-white w-32 text-right truncate">DAVID/JAVIER</span>
+                        </div>
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">RODRIGO/SERGIO</span>
+                            <span class="bg-gray-800 text-gray-400 font-bold px-3 py-1 rounded text-xs border border-gray-700">- : -</span>
+                            <span class="font-bold text-white w-32 text-right truncate">DAVID/JAVIER</span>
+                        </div>
+                        <div class="bg-gray-950/60 border border-gray-800 rounded-xl p-3 flex justify-between items-center text-xs">
+                            <span class="font-bold text-white w-32 truncate">GONZALO/FERNANDO</span>
+                            <span class="bg-gray-800 text-gray-400 font-bold px-3 py-1 rounded text-xs border border-gray-700">- : -</span>
+                            <span class="font-bold text-white w-32 text-right truncate">ALBERTO/MARCOS</span>
                         </div>
                     </div>
                 </div>
@@ -321,81 +294,77 @@
             </div>
         </div>
 
-        <!-- ================= CUADRO ELIMINATORIAS ================= -->
+        <!-- ================= CUADRO ELIMINATORIAS (MÁS GRANDE) ================= -->
         <div id="seccion-eliminatorias" class="space-y-8" style="display: none;">
-            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 shadow-xl">
-                <h3 class="text-xl font-bold text-white mb-2 text-center flex items-center justify-center gap-2">
-                    <span class="text-[#ccff00]">#</span> CUADRO FINAL Y ELIMINATORIAS
-                </h3>
-                <p class="text-xs text-gray-400 mb-8 text-center">Estructura de cruces finales con animación de campeones.</p>
+            <div class="bg-gray-900/90 border border-gray-800 rounded-3xl p-8 shadow-2xl">
+                
+                <!-- Encabezados de columnas de eliminatorias -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 text-center font-black text-xs md:text-sm tracking-wider uppercase">
+                    <div class="text-orange-400 flex items-center justify-center gap-2">🔥 CUARTOS DE FINAL</div>
+                    <div class="text-amber-400 flex items-center justify-center gap-2">⚡ SEMIFINALES</div>
+                    <div class="text-purple-400 flex items-center justify-center gap-2">👑 GRAN FINAL</div>
+                    <div class="text-[#ccff00] flex items-center justify-center gap-2">🏆 CAMPEONES</div>
+                </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
                     
-                    <!-- Cuartos de Final -->
-                    <div class="space-y-4">
-                        <div class="bg-blue-700 text-white font-bold text-center py-2 rounded-xl text-xs uppercase tracking-wider shadow">Cuartos de Final</div>
-                        
-                        <div class="bg-gray-800/50 border border-blue-600/40 rounded-xl p-3 space-y-2 text-xs">
-                            <div class="text-[10px] text-blue-400 font-bold">C1 • Pista 35 (19:00)</div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>1º Grupo 35</span><span class="font-bold text-[#ccff00]">-</span></div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>4º Grupo 38</span><span class="font-bold text-[#ccff00]">-</span></div>
+                    <!-- Columna Cuartos de Final (Más grandes) -->
+                    <div class="space-y-5">
+                        <div class="bg-gray-950/80 border border-gray-800 rounded-2xl p-4 space-y-3 shadow-lg">
+                            <div class="text-xs text-orange-400 font-bold">📍 C1 — PISTA 35 (19:00)</div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-2.5 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-2.5 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
                         </div>
 
-                        <div class="bg-gray-800/50 border border-blue-600/40 rounded-xl p-3 space-y-2 text-xs">
-                            <div class="text-[10px] text-blue-400 font-bold">C2 • Pista 39 (19:00)</div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>2º Grupo 38</span><span class="font-bold text-[#ccff00]">-</span></div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>3º Grupo 35</span><span class="font-bold text-[#ccff00]">-</span></div>
+                        <div class="bg-gray-950/80 border border-gray-800 rounded-2xl p-4 space-y-3 shadow-lg">
+                            <div class="text-xs text-orange-400 font-bold">📍 C2 — PISTA 39 (19:00)</div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-2.5 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-2.5 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
                         </div>
 
-                        <div class="bg-gray-800/50 border border-blue-600/40 rounded-xl p-3 space-y-2 text-xs">
-                            <div class="text-[10px] text-blue-400 font-bold">C3 • Pista 38 (19:00)</div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>1º Grupo 38</span><span class="font-bold text-[#ccff00]">-</span></div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>4º Grupo 35</span><span class="font-bold text-[#ccff00]">-</span></div>
+                        <div class="bg-gray-950/80 border border-gray-800 rounded-2xl p-4 space-y-3 shadow-lg">
+                            <div class="text-xs text-orange-400 font-bold">📍 C3 — PISTA 38 (19:00)</div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-2.5 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-2.5 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
                         </div>
 
-                        <div class="bg-gray-800/50 border border-blue-600/40 rounded-xl p-3 space-y-2 text-xs">
-                            <div class="text-[10px] text-blue-400 font-bold">C4 • Pista 32 (19:00)</div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>2º Grupo 35</span><span class="font-bold text-[#ccff00]">-</span></div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>3º Grupo 38</span><span class="font-bold text-[#ccff00]">-</span></div>
+                        <div class="bg-gray-950/80 border border-gray-800 rounded-2xl p-4 space-y-3 shadow-lg">
+                            <div class="text-xs text-orange-400 font-bold">📍 C4 — PISTA 32 (19:00)</div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-2.5 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-2.5 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
                         </div>
                     </div>
 
-                    <!-- Semifinales -->
+                    <!-- Columna Semifinales -->
                     <div class="space-y-6">
-                        <div class="bg-red-600 text-white font-bold text-center py-2 rounded-xl text-xs uppercase tracking-wider shadow">Semifinales</div>
-                        
-                        <div class="bg-gray-800/50 border border-red-600/40 rounded-xl p-3 space-y-2 text-xs">
-                            <div class="text-[10px] text-red-400 font-bold">S1 • Pista 32 (19:25)</div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>Ganador C1</span><span class="font-bold text-[#ccff00]">-</span></div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>Ganador C2</span><span class="font-bold text-[#ccff00]">-</span></div>
+                        <div class="bg-gray-950/80 border border-gray-800 rounded-2xl p-5 space-y-3 shadow-lg">
+                            <div class="text-xs text-amber-400 font-bold">📍 S1 — PISTA 32 (19:25)</div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
                         </div>
 
-                        <div class="bg-gray-800/50 border border-red-600/40 rounded-xl p-3 space-y-2 text-xs">
-                            <div class="text-[10px] text-red-400 font-bold">S2 • Pista 38 (19:25)</div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>Ganador C3</span><span class="font-bold text-[#ccff00]">-</span></div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-1.5 rounded"><span>Ganador C4</span><span class="font-bold text-[#ccff00]">-</span></div>
+                        <div class="bg-gray-950/80 border border-gray-800 rounded-2xl p-5 space-y-3 shadow-lg">
+                            <div class="text-xs text-amber-400 font-bold">📍 S2 — PISTA 38 (19:25)</div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-3 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
                         </div>
                     </div>
 
-                    <!-- Gran Final -->
+                    <!-- Columna Gran Final -->
                     <div class="space-y-4">
-                        <div class="bg-purple-700 text-white font-bold text-center py-2 rounded-xl text-xs uppercase tracking-wider shadow">Gran Final</div>
-                        
-                        <div class="bg-gray-800/50 border border-purple-600/40 rounded-xl p-4 space-y-3 text-xs">
-                            <div class="text-[10px] text-purple-300 font-bold text-center">FINAL • Pista 35 (20:00)</div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-2 rounded"><span>Ganador S1</span><span class="font-bold text-[#ccff00]">-</span></div>
-                            <div class="flex justify-between items-center bg-gray-900 px-3 py-2 rounded"><span>Ganador S2</span><span class="font-bold text-[#ccff00]">-</span></div>
+                        <div class="bg-gray-950/80 border border-purple-500/40 rounded-2xl p-6 space-y-4 shadow-xl">
+                            <div class="text-xs text-purple-400 font-bold text-center">📍 FINAL — PISTA 35 (20:00)</div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-3.5 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
+                            <div class="flex justify-between items-center bg-gray-900 px-4 py-3.5 rounded-xl text-xs font-bold"><span>POR DEFINIR</span><span class="text-gray-500">-</span></div>
                         </div>
                     </div>
 
-                    <!-- Campeones (Con Copa Animada) -->
+                    <!-- Columna Campeones -->
                     <div class="space-y-4">
-                        <div class="bg-emerald-700 text-white font-bold text-center py-2 rounded-xl text-xs uppercase tracking-wider shadow">Campeones</div>
-                        
-                        <div class="bg-gray-900 border-2 border-[#ccff00] rounded-2xl p-6 text-center space-y-3 shadow-2xl animate-float">
-                            <div class="text-4xl">🏆</div>
-                            <div class="text-xs uppercase tracking-wider font-bold text-gray-400">Ganadores del Torneo</div>
-                            <div class="text-base font-black text-[#ccff00] bg-gray-950/80 py-2 px-3 rounded-xl border border-gray-800">
+                        <div class="bg-gray-950 border-2 border-[#ccff00] rounded-3xl p-8 text-center space-y-4 shadow-2xl animate-float">
+                            <div class="text-5xl">🏆</div>
+                            <div class="text-xs uppercase tracking-widest font-bold text-gray-400">GANADORES DEL TORNEO</div>
+                            <div class="text-lg font-black text-[#ccff00] bg-gray-900 py-3 px-4 rounded-2xl border border-gray-800 shadow-inner">
                                 POR DEFINIR
                             </div>
                         </div>
