@@ -78,10 +78,11 @@
         .empty-state {
             text-align: center;
             color: #8b92af;
-            padding: 30px;
+            padding: 20px;
             background: #1a1d2d;
             border-radius: 12px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -90,7 +91,7 @@
     <div class="container">
         <h2>⚔️ PARTIDOS DEL GRUPO</h2>
         <div id="lista-partidos">
-            <div class="empty-state">Sincronizando partidos...</div>
+            <div class="empty-state">Analizando datos del Excel...</div>
         </div>
     </div>
 
@@ -106,59 +107,59 @@
                 contenedor.innerHTML = ""; 
 
                 if (!filas || filas.length === 0) {
-                    contenedor.innerHTML = `<div class="empty-state">No se han encontrado datos en el Excel.</div>`;
+                    contenedor.innerHTML = `<div class="empty-state">El Excel está completamente vacío.</div>`;
                     return;
                 }
 
                 let partidosEncontrados = 0;
+                let depuracionHTML = "";
 
-                // En JavaScript las columnas empiezan en 0:
-                // Columna I = Índice 8 (Pareja 1)
-                // Columna J = Índice 9 (Hora)
-                // Columna K = Índice 10 (Resultado 1)
-                // Columna M = Índice 12 (Resultado 2)
-                // Columna N = Índice 13 (Pareja 2)
-
+                // Vamos a recorrer las filas buscando cualquier texto en las columnas I (8) o N (13)
                 for (let i = 0; i < filas.length; i++) {
                     let fila = filas[i];
                     
-                    let horaPista = fila[9];  // Columna J (Hora)
-                    let pareja1  = fila[8];  // Columna I (Pareja 1)
-                    let goles1   = fila[10]; // Columna K (Resultado 1)
-                    let goles2   = fila[12]; // Columna M (Resultado 2)
-                    let pareja2  = fila[13]; // Columna N (Pareja 2)
+                    let horaPista = fila[9] || "PARTIDO";  
+                    let pareja1  = fila[8];  
+                    let goles1   = fila[10]; 
+                    let goles2   = fila[12]; 
+                    let pareja2  = fila[13]; 
 
-                    // Filtramos para asegurarnos de que cogemos solo las filas que tienen parejas asignadas
-                    if (!pareja1 || !pareja2 || pareja1 === "EQUIPO" || pareja1 === "PARTIDOS") continue;
+                    // Si hay algo escrito en alguna de las dos columnas de equipos, lo pintamos o lo registramos
+                    if (pareja1 || pareja2) {
+                        partidosEncontrados++;
 
-                    partidosEncontrados++;
+                        let hayResultado = (goles1 !== "" && goles1 !== null && goles1 !== undefined && 
+                                            goles2 !== "" && goles2 !== null && goles2 !== undefined &&
+                                            !isNaN(goles1) && !isNaN(goles2));
+                        
+                        let htmlMarcador = hayResultado 
+                            ? `<div class="score-played">${goles1}-${goles2}</div>` 
+                            : `<div class="score-pending">-:-</div>`;
 
-                    // Comprobación de si hay resultado introducido
-                    let hayResultado = (goles1 !== "" && goles1 !== null && goles1 !== undefined && 
-                                        goles2 !== "" && goles2 !== null && goles2 !== undefined &&
-                                        !isNaN(goles1) && !isNaN(goles2));
-                    
-                    let htmlMarcador = hayResultado 
-                        ? `<div class="score-played">${goles1}-${goles2}</div>` 
-                        : `<div class="score-pending">-:-</div>`;
-
-                    let tarjeta = document.createElement("div");
-                    tarjeta.className = "match-card";
-                    tarjeta.innerHTML = `
-                        <div style="width: 100%;">
-                            <div class="info-pista">📍 ${horaPista || "PARTIDO"}</div>
-                            <div class="match-content">
-                                <span class="team">${pareja1}</span>
-                                ${htmlMarcador}
-                                <span class="team">${pareja2}</span>
+                        let tarjeta = document.createElement("div");
+                        tarjeta.className = "match-card";
+                        tarjeta.innerHTML = `
+                            <div style="width: 100%;">
+                                <div class="info-pista">📍 ${horaPista}</div>
+                                <div class="match-content">
+                                    <span class="team">${pareja1 || "---"}</span>
+                                    ${htmlMarcador}
+                                    <span class="team">${pareja2 || "---"}</span>
+                                </div>
                             </div>
-                        </div>
-                    `;
-                    contenedor.appendChild(tarjeta);
+                        `;
+                        contenedor.appendChild(tarjeta);
+                    }
                 }
 
                 if (partidosEncontrados === 0) {
-                    contenedor.innerHTML = `<div class="empty-state">El Excel está vacío de partidos en este momento. Se muestra limpio.</div>`;
+                    // Si sigue sin pintar nada, mostraremos un resumen de las primeras filas que lee para ver dónde están los datos exactamente
+                    let muestra = JSON.stringify(filas.slice(0, 8)).substring(0, 300);
+                    contenedor.innerHTML = `
+                        <div class="empty-state" style="color: #ff477e;">No se detectaron parejas en las columnas I y N.</div>
+                        <div class="empty-state" style="font-size: 0.75rem; text-align: left; word-break: break-all;">
+                            <b>Datos leídos del Excel (muestra):</b><br>${muestra}
+                        </div>`;
                 }
 
             } catch (error) {
