@@ -21,7 +21,7 @@
             text-shadow: 0 0 10px rgba(204, 255, 0, 0.5);
         }
     </style>
-    <!-- Script de recarga automática cada 30 segundos -->
+    <!-- Recarga automática cada 30 segundos -->
     <script>
         setTimeout(function() {
             location.reload(true);
@@ -38,12 +38,12 @@
         <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-2">
             CATEGORÍA <span class="neon-text">MASCULINO A</span>
         </h1>
-        <p class="text-gray-400 text-sm md:text-base">Seguimiento en directo de liguilla, clasificación y partidos</p>
+        <p class="text-gray-400 text-sm md:text-base">Seguimiento en directo de liguilla, clasificación y eliminatorias</p>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 space-y-10">
 
-        <!-- Info / Estado -->
+        <!-- Info / Estado con Botones de Fase -->
         <section class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 shadow-xl backdrop-blur-md">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
                 <div>
@@ -51,18 +51,19 @@
                         <span class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span>
                         Estado del Torneo: En Curso
                     </h2>
-                    <p class="text-sm text-gray-400 mt-1">Sincronización automática activa (se actualiza sola cada 30 segundos).</p>
+                    <p class="text-sm text-gray-400 mt-1">Actualizado en tiempo real para jugadores y asistentes.</p>
                 </div>
-                <div class="flex gap-3">
-                    <span class="bg-gray-800 text-gray-300 px-4 py-2 rounded-xl text-sm font-semibold border border-gray-700">Grupos G35 y G38</span>
+                <div class="flex items-center gap-3">
+                    <span class="bg-gray-800 text-gray-200 px-4 py-2 rounded-xl text-xs font-bold border border-gray-700 shadow-inner">Grupos G35 & G38</span>
+                    <span class="bg-[#ccff00]/10 text-[#ccff00] px-4 py-2 rounded-xl text-xs font-bold border border-[#ccff00]/30 shadow-inner">Fase Final: Cuartos</span>
                 </div>
             </div>
         </section>
 
-        <!-- FASE DE GRUPOS (G35 y G38) -->
+        <!-- FASE DE GRUPOS -->
         <section>
             <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <span class="text-[#ccff00]">#</span> FASE DE GRUPOS (CLASIFICACIÓN)
+                <span class="text-[#ccff00]">#</span> FASE DE GRUPOS
             </h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -71,7 +72,7 @@
                 <div class="bg-gray-900/60 border border-gray-800 rounded-2xl p-5 shadow-lg">
                     <div class="border-b border-gray-800 pb-3 mb-4 flex justify-between items-center">
                         <h4 class="font-bold text-lg text-[#ccff00]">GRUPO G35</h4>
-                        <span class="text-xs text-gray-400 bg-gray-800 px-2.5 py-1 rounded-lg">Pista Asignada</span>
+                        <span class="text-xs text-gray-400 bg-gray-800 px-2.5 py-1 rounded-lg">Pista 1</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm">
@@ -80,28 +81,18 @@
                                     <th class="pb-2">Pareja</th>
                                     <th class="pb-2 text-center">J</th>
                                     <th class="pb-2 text-center">G</th>
-                                    <th class="pb-2 text-center">P</th>
                                     <th class="pb-2 text-center">Pts</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-800/50">
                                 <tr>
-                                    <td class="py-3 font-medium text-white">Pareja 1 (G35)</td>
-                                    <td class="py-3 text-center text-gray-400">0</td>
-                                    <td class="py-3 text-center text-gray-400">0</td>
-                                    <td class="py-3 text-center text-gray-400">0</td>
-                                    <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3 font-medium text-white">Pareja 2 (G35)</td>
-                                    <td class="py-3 text-center text-gray-400">0</td>
+                                    <td class="py-3 font-medium text-white">Pareja 1 / 2</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
                                 </tr>
                                 <tr>
-                                    <td class="py-3 font-medium text-white">Pareja 3 (G35)</td>
-                                    <td class="py-3 text-center text-gray-400">0</td>
+                                    <td class="py-3 font-medium text-white">Pareja 3 / 4</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
@@ -115,7 +106,7 @@
                 <div class="bg-gray-900/60 border border-gray-800 rounded-2xl p-5 shadow-lg">
                     <div class="border-b border-gray-800 pb-3 mb-4 flex justify-between items-center">
                         <h4 class="font-bold text-lg text-[#ccff00]">GRUPO G38</h4>
-                        <span class="text-xs text-gray-400 bg-gray-800 px-2.5 py-1 rounded-lg">Pista Asignada</span>
+                        <span class="text-xs text-gray-400 bg-gray-800 px-2.5 py-1 rounded-lg">Pista 2</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm">
@@ -124,28 +115,18 @@
                                     <th class="pb-2">Pareja</th>
                                     <th class="pb-2 text-center">J</th>
                                     <th class="pb-2 text-center">G</th>
-                                    <th class="pb-2 text-center">P</th>
                                     <th class="pb-2 text-center">Pts</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-800/50">
                                 <tr>
-                                    <td class="py-3 font-medium text-white">Pareja 1 (G38)</td>
-                                    <td class="py-3 text-center text-gray-400">0</td>
-                                    <td class="py-3 text-center text-gray-400">0</td>
-                                    <td class="py-3 text-center text-gray-400">0</td>
-                                    <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3 font-medium text-white">Pareja 2 (G38)</td>
-                                    <td class="py-3 text-center text-gray-400">0</td>
+                                    <td class="py-3 font-medium text-white">Pareja 1 / 2</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
                                 </tr>
                                 <tr>
-                                    <td class="py-3 font-medium text-white">Pareja 3 (G38)</td>
-                                    <td class="py-3 text-center text-gray-400">0</td>
+                                    <td class="py-3 font-medium text-white">Pareja 3 / 4</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
@@ -158,44 +139,37 @@
             </div>
         </section>
 
-        <!-- CALENDARIO Y RESULTADOS DE PARTIDOS -->
+        <!-- CUADRO FINAL Y ELIMINATORIAS (ÁRBOL) -->
         <section class="bg-gray-900/60 border border-gray-800 rounded-2xl p-6 shadow-lg">
-            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <span class="text-[#ccff00]">#</span> PARTIDOS, HORARIOS Y RESULTADOS
+            <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                <span class="text-[#ccff00]">#</span> CUADRO FINAL Y ELIMINATORIAS
             </h3>
+            <p class="text-xs text-gray-400 mb-6">Los cruces de cuartos de final y semifinales se actualizarán al finalizar la fase de grupos.</p>
 
-            <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
-                <!-- Partido 1 -->
-                <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-4 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div class="flex items-center gap-3 text-xs text-gray-400">
-                        <span class="bg-[#ccff00]/10 text-[#ccff00] font-bold px-2.5 py-1 rounded-md">G35</span>
-                        <span>Pista 1</span>
-                        <span>•</span>
-                        <span>10:00 h</span>
+                <!-- Cuartos de Final -->
+                <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-4 text-center">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-[#ccff00] mb-3">Cuartos de Final</h4>
+                    <div class="bg-gray-900/80 border border-gray-800 rounded-lg py-6 px-4 text-sm text-gray-400 font-medium">
+                        Por definir
                     </div>
-                    <div class="flex items-center justify-center gap-4 text-center">
-                        <span class="font-medium text-white text-sm md:text-base w-36 sm:w-48 text-right">Pareja A</span>
-                        <span class="bg-gray-900 border border-gray-700 px-3 py-1.5 rounded-lg font-mono font-bold text-[#ccff00] text-sm tracking-widest">vs</span>
-                        <span class="font-medium text-white text-sm md:text-base w-36 sm:w-48 text-left">Pareja B</span>
-                    </div>
-                    <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1.5 rounded-lg border border-gray-700">Pendiente</span>
                 </div>
 
-                <!-- Partido 2 -->
-                <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-4 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div class="flex items-center gap-3 text-xs text-gray-400">
-                        <span class="bg-[#ccff00]/10 text-[#ccff00] font-bold px-2.5 py-1 rounded-md">G38</span>
-                        <span>Pista 2</span>
-                        <span>•</span>
-                        <span>10:45 h</span>
+                <!-- Semifinales -->
+                <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-4 text-center">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-[#ccff00] mb-3">Semifinales</h4>
+                    <div class="bg-gray-900/80 border border-gray-800 rounded-lg py-6 px-4 text-sm text-gray-400 font-medium">
+                        Por definir
                     </div>
-                    <div class="flex items-center justify-center gap-4 text-center">
-                        <span class="font-medium text-white text-sm md:text-base w-36 sm:w-48 text-right">Pareja C</span>
-                        <span class="bg-gray-900 border border-gray-700 px-3 py-1.5 rounded-lg font-mono font-bold text-[#ccff00] text-sm tracking-widest">vs</span>
-                        <span class="font-medium text-white text-sm md:text-base w-36 sm:w-48 text-left">Pareja D</span>
+                </div>
+
+                <!-- Gran Final -->
+                <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-4 text-center">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-[#ccff00] mb-3">Gran Final</h4>
+                    <div class="bg-gray-900/80 border border-gray-800 rounded-lg py-6 px-4 text-sm text-gray-400 font-medium">
+                        Por definir
                     </div>
-                    <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1.5 rounded-lg border border-gray-700">Pendiente</span>
                 </div>
 
             </div>
