@@ -53,7 +53,7 @@
         }
         .team {
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 0.90rem;
             width: 38%;
             text-align: center;
             word-break: break-word;
@@ -75,14 +75,13 @@
             font-weight: bold;
             font-size: 1rem;
         }
-        .empty-state {
+        .message-box {
             text-align: center;
             color: #8b92af;
-            padding: 20px;
+            padding: 25px;
             background: #1a1d2d;
             border-radius: 12px;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 0.90rem;
         }
     </style>
 </head>
@@ -91,80 +90,77 @@
     <div class="container">
         <h2>⚔️ PARTIDOS DEL GRUPO</h2>
         <div id="lista-partidos">
-            <div class="empty-state">Analizando datos del Excel...</div>
+            <div class="message-box">Conectando con Google Sheets...</div>
         </div>
     </div>
 
     <script>
+        // URL de tu aplicación web desplegada en Google Apps Script
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxFWrz0r94Rt5HcGwoCGSKwkChlJ_bZ925qQJd46GQSCohRPNfmVl7VkeCJDBkM_eQM4g/exec";
 
         async function cargarPartidos() {
+            let contenedor = document.getElementById("lista-partidos");
+            
             try {
                 let response = await fetch(WEB_APP_URL);
-                let filas = await response.json();
+                if (!response.ok) throw new Error("Error en la respuesta del servidor");
                 
-                let contenedor = document.getElementById("lista-partidos");
+                let filas = await response.json();
                 contenedor.innerHTML = ""; 
 
                 if (!filas || filas.length === 0) {
-                    contenedor.innerHTML = `<div class="empty-state">El Excel está completamente vacío.</div>`;
+                    contenedor.innerHTML = `<div class="message-box">El documento está vacío.</div>`;
                     return;
                 }
 
                 let partidosEncontrados = 0;
-                let depuracionHTML = "";
 
-                // Vamos a recorrer las filas buscando cualquier texto en las columnas I (8) o N (13)
+                // Recorremos las filas del Excel buscando las parejas en las columnas I (8) y N (13)
                 for (let i = 0; i < filas.length; i++) {
                     let fila = filas[i];
                     
-                    let horaPista = fila[9] || "PARTIDO";  
-                    let pareja1  = fila[8];  
-                    let goles1   = fila[10]; 
-                    let goles2   = fila[12]; 
-                    let pareja2  = fila[13]; 
+                    let horaPista = fila[9];  // Columna J (Hora)
+                    let pareja1  = fila[8];  // Columna I (Pareja 1)
+                    let goles1   = fila[10]; // Columna K (Resultado 1)
+                    let goles2   = fila[12]; // Columna M (Resultado 2)
+                    let pareja2  = fila[13]; // Columna N (Pareja 2)
 
-                    // Si hay algo escrito en alguna de las dos columnas de equipos, lo pintamos o lo registramos
-                    if (pareja1 || pareja2) {
-                        partidosEncontrados++;
+                    // Validamos que la fila contenga nombres de parejas reales
+                    if (!pareja1 || !pareja2 || pareja1 === "EQUIPO" || pareja1 === "PARTIDOS") continue;
 
-                        let hayResultado = (goles1 !== "" && goles1 !== null && goles1 !== undefined && 
-                                            goles2 !== "" && goles2 !== null && goles2 !== undefined &&
-                                            !isNaN(goles1) && !isNaN(goles2));
-                        
-                        let htmlMarcador = hayResultado 
-                            ? `<div class="score-played">${goles1}-${goles2}</div>` 
-                            : `<div class="score-pending">-:-</div>`;
+                    partidosEncontrados++;
 
-                        let tarjeta = document.createElement("div");
-                        tarjeta.className = "match-card";
-                        tarjeta.innerHTML = `
-                            <div style="width: 100%;">
-                                <div class="info-pista">📍 ${horaPista}</div>
-                                <div class="match-content">
-                                    <span class="team">${pareja1 || "---"}</span>
-                                    ${htmlMarcador}
-                                    <span class="team">${pareja2 || "---"}</span>
-                                </div>
+                    // Comprobación de resultados: si están vacíos o no son números, pinta "-:-" en gris
+                    let hayResultado = (goles1 !== "" && goles1 !== null && goles1 !== undefined && 
+                                        goles2 !== "" && goles2 !== null && goles2 !== undefined &&
+                                        !isNaN(goles1) && !isNaN(goles2));
+                    
+                    let htmlMarcador = hayResultado 
+                        ? `<div class="score-played">${goles1}-${goles2}</div>` 
+                        : `<div class="score-pending">-:-</div>`;
+
+                    let tarjeta = document.createElement("div");
+                    tarjeta.className = "match-card";
+                    tarjeta.innerHTML = `
+                        <div style="width: 100%;">
+                            <div class="info-pista">📍 ${horaPista || "PARTIDO"}</div>
+                            <div class="match-content">
+                                <span class="team">${pareja1}</span>
+                                ${htmlMarcador}
+                                <span class="team">${pareja2}</span>
                             </div>
-                        `;
-                        contenedor.appendChild(tarjeta);
-                    }
+                        </div>
+                    `;
+                    contenedor.appendChild(tarjeta);
                 }
 
                 if (partidosEncontrados === 0) {
-                    // Si sigue sin pintar nada, mostraremos un resumen de las primeras filas que lee para ver dónde están los datos exactamente
-                    let muestra = JSON.stringify(filas.slice(0, 8)).substring(0, 300);
-                    contenedor.innerHTML = `
-                        <div class="empty-state" style="color: #ff477e;">No se detectaron parejas en las columnas I y N.</div>
-                        <div class="empty-state" style="font-size: 0.75rem; text-align: left; word-break: break-all;">
-                            <b>Datos leídos del Excel (muestra):</b><br>${muestra}
-                        </div>`;
+                    contenedor.innerHTML = `<div class="message-box">No se encontraron partidos válidos en las filas analizadas.</div>`;
                 }
 
             } catch (error) {
-                console.error("Error al sincronizar con Google Sheets:", error);
-                document.getElementById("lista-partidos").innerHTML = `<div class="empty-state" style="color: #ff477e;">Error al conectar con la API.</div>`;
+                console.error("Error de conexión:", error);
+                contenedor.innerHTML = `<div class="message-box" style="color: #ff477e;">No se pudo conectar con Google Sheets. Comprueba que la URL de Apps Script esté publicada como "Cualquier usuario".</div>`;
             }
         }
 
