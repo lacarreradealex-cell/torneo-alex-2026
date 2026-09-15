@@ -58,7 +58,6 @@
             text-align: center;
             word-break: break-word;
         }
-        /* Estilo para resultado pendiente (Gris) */
         .score-pending {
             background-color: #262a3d;
             color: #8b92af;
@@ -68,7 +67,6 @@
             font-size: 1rem;
             letter-spacing: 2px;
         }
-        /* Estilo para resultado jugado (Verde) */
         .score-played {
             background-color: #ccff00;
             color: #0f111a;
@@ -77,6 +75,14 @@
             font-weight: bold;
             font-size: 1rem;
         }
+        .empty-state {
+            text-align: center;
+            color: #8b92af;
+            padding: 30px;
+            background: #1a1d2d;
+            border-radius: 12px;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
@@ -84,13 +90,11 @@
     <div class="container">
         <h2>⚔️ PARTIDOS DEL GRUPO</h2>
         <div id="lista-partidos">
-            <!-- Los partidos se cargarán aquí automáticamente desde Google Sheets -->
-            <p style="text-align: center; color: #8b92af;">Cargando partidos en tiempo real...</p>
+            <div class="empty-state">Sincronizando con Google Sheets...</div>
         </div>
     </div>
 
     <script>
-        // Tu URL real de Google Apps Script ya integrada
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxFWrz0r94Rt5HcGwoCGSKwkChlJ_bZ925qQJd46GQSCohRPNfmVl7VkeCJDBkM_eQM4g/exec";
 
         async function cargarPartidos() {
@@ -99,50 +103,66 @@
                 let filas = await response.json();
                 
                 let contenedor = document.getElementById("lista-partidos");
-                contenedor.innerHTML = ""; // Limpiar antes de actualizar
+                contenedor.innerHTML = ""; 
 
-                // Empezamos en i = 1 para saltarnos la cabecera (fila 0) de tu Excel
+                if (!filas || filas.length <= 1) {
+                    contenedor.innerHTML = `<div class="empty-state">El Excel devuelve datos vacíos o solo la cabecera.</div>`;
+                    return;
+                }
+
+                let partidosEncontrados = 0;
+
+                // Recorremos las filas del Excel
                 for (let i = 1; i < filas.length; i++) {
-                    let horaPista = filas[i][0] || "PISTA · 10:00 H"; // Columna A (Hora/Pista)
-                    let pareja1  = filas[i][1]; // Columna B: Pareja 1
-                    let pareja2  = filas[i][2]; // Columna C: Pareja 2
-                    let goles1   = filas[i][3]; // Columna D: Resultado 1
-                    let goles2   = filas[i][4]; // Columna E: Resultado 2
+                    let fila = filas[i];
+                    
+                    // --- CAMBIA ESTOS NÚMEROS SEGÚN EN QUÉ COLUMNA ESTÁ CADA COSA ---
+                    // [0] es la primera columna (A), [1] la B, [2] la C, [3] la D, [4] la E...
+                    let horaPista = fila[0] || "PISTA 35 · 10:00 H"; 
+                    let pareja1  = fila[1]; // Columna B
+                    let pareja2  = fila[2]; // Columna C
+                    let goles1   = fila[3]; // Columna D (Resultado 1)
+                    let goles2   = fila[4]; // Columna E (Resultado 2)
 
-                    // Si la fila está totalmente vacía de parejas, la saltamos
+                    // Si las columnas principales están vacías, probamos a saltar
                     if (!pareja1 && !pareja2) continue;
 
-                    // COMPROBACIÓN: Si las celdas de resultados están vacías, muestra el gris "-:-"
-                    let hayResultado = (goles1 !== "" && goles1 !== null && goles2 !== "" && goles2 !== "" && goles2 !== undefined);
+                    partidosEncontrados++;
+
+                    // Comprobamos si hay resultado introducido
+                    let hayResultado = (goles1 !== "" && goles1 !== null && goles1 !== undefined && 
+                                        goles2 !== "" && goles2 !== null && goles2 !== undefined);
                     
                     let htmlMarcador = hayResultado 
                         ? `<div class="score-played">${goles1}-${goles2}</div>` 
                         : `<div class="score-pending">-:-</div>`;
 
-                    // Crear la tarjeta visual del partido
                     let tarjeta = document.createElement("div");
                     tarjeta.className = "match-card";
                     tarjeta.innerHTML = `
                         <div style="width: 100%;">
                             <div class="info-pista">📍 ${horaPista}</div>
                             <div class="match-content">
-                                <span class="team">${pareja1}</span>
+                                <span class="team">${pareja1 || "Por definir"}</span>
                                 ${htmlMarcador}
-                                <span class="team">${pareja2}</span>
+                                <span class="team">${pareja2 || "Por definir"}</span>
                             </div>
                         </div>
                     `;
                     contenedor.appendChild(tarjeta);
                 }
+
+                if (partidosEncontrados === 0) {
+                    contenedor.innerHTML = `<div class="empty-state">Se leyeron ${filas.length} filas pero ninguna tiene formato de partido válido. Revisa el orden de las columnas.</div>`;
+                }
+
             } catch (error) {
                 console.error("Error al sincronizar con Google Sheets:", error);
+                document.getElementById("lista-partidos").innerHTML = `<div class="empty-state" style="color: #ff477e;">Error al conectar con la API de Google.</div>`;
             }
         }
 
-        // Cargar al abrir la web
         cargarPartidos();
-
-        // Sincronizar automáticamente en tiempo real cada 15 segundos
         setInterval(cargarPartidos, 15000);
     </script>
 
