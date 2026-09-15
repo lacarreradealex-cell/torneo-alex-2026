@@ -51,16 +51,16 @@
                         <span class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span>
                         Estado del Torneo: En Curso
                     </h2>
-                    <p class="text-sm text-gray-400 mt-1">Actualizado en tiempo real para jugadores y asistentes.</p>
+                    <p class="text-sm text-gray-400 mt-1">Actualizado en tiempo real para jugadores y asistentes (autorecarga activa).</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span class="bg-gray-800 text-gray-200 px-4 py-2 rounded-xl text-xs font-bold border border-gray-700 shadow-inner">Grupos G35 & G38</span>
+                    <span class="bg-gray-800 text-gray-200 px-4 py-2 rounded-xl text-xs font-bold border border-gray-700 shadow-inner">2 Grupos (G35 & G38)</span>
                     <span class="bg-[#ccff00]/10 text-[#ccff00] px-4 py-2 rounded-xl text-xs font-bold border border-[#ccff00]/30 shadow-inner">Fase Final: Cuartos</span>
                 </div>
             </div>
         </section>
 
-        <!-- FASE DE GRUPOS -->
+        <!-- FASE DE GRUPOS (G35 y G38) -->
         <section>
             <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
                 <span class="text-[#ccff00]">#</span> FASE DE GRUPOS
@@ -86,13 +86,19 @@
                             </thead>
                             <tbody class="divide-y divide-gray-800/50">
                                 <tr>
-                                    <td class="py-3 font-medium text-white">Pareja 1 / 2</td>
+                                    <td class="py-3 font-medium text-white">Pareja A / B</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
                                 </tr>
                                 <tr>
-                                    <td class="py-3 font-medium text-white">Pareja 3 / 4</td>
+                                    <td class="py-3 font-medium text-white">Pareja C / D</td>
+                                    <td class="py-3 text-center text-gray-400">0</td>
+                                    <td class="py-3 text-center text-gray-400">0</td>
+                                    <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 font-medium text-white">Pareja E / F</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
@@ -131,9 +137,58 @@
                                     <td class="py-3 text-center text-gray-400">0</td>
                                     <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
                                 </tr>
+                                <tr>
+                                    <td class="py-3 font-medium text-white">Pareja 5 / 6</td>
+                                    <td class="py-3 text-center text-gray-400">0</td>
+                                    <td class="py-3 text-center text-gray-400">0</td>
+                                    <td class="py-3 text-center font-bold text-[#ccff00]">0</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CALENDARIO Y RESULTADOS DE PARTIDOS -->
+        <section class="bg-gray-900/60 border border-gray-800 rounded-2xl p-6 shadow-lg">
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <span class="text-[#ccff00]">#</span> PARTIDOS, HORARIOS Y RESULTADOS
+            </h3>
+
+            <div class="space-y-4">
+                
+                <!-- Partido G35 -->
+                <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3 text-xs text-gray-400">
+                        <span class="bg-[#ccff00]/10 text-[#ccff00] font-bold px-2.5 py-1 rounded-md">G35</span>
+                        <span>Pista 1</span>
+                        <span>•</span>
+                        <span>10:00 h</span>
+                    </div>
+                    <div class="flex items-center justify-center gap-4 text-center">
+                        <span class="font-medium text-white text-sm md:text-base w-36 sm:w-48 text-right">Pareja A / B</span>
+                        <span class="bg-gray-900 border border-gray-700 px-3 py-1.5 rounded-lg font-mono font-bold text-[#ccff00] text-sm tracking-widest">vs</span>
+                        <span class="font-medium text-white text-sm md:text-base w-36 sm:w-48 text-left">Pareja C / D</span>
+                    </div>
+                    <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1.5 rounded-lg border border-gray-700">Pendiente</span>
+                </div>
+
+                <!-- Partido G38 -->
+                <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3 text-xs text-gray-400">
+                        <span class="bg-[#ccff00]/10 text-[#ccff00] font-bold px-2.5 py-1 rounded-md">G38</span>
+                        <span>Pista 2</span>
+                        <span>•</span>
+                        <span>10:45 h</span>
+                    </div>
+                    <div class="flex items-center justify-center gap-4 text-center">
+                        <span class="font-medium text-white text-sm md:text-base w-36 sm:w-48 text-right">Pareja 1 / 2</span>
+                        <span class="bg-gray-900 border border-gray-700 px-3 py-1.5 rounded-lg font-mono font-bold text-[#ccff00] text-sm tracking-widest">vs</span>
+                        <span class="font-medium text-white text-sm md:text-base w-36 sm:w-48 text-left">Pareja 3 / 4</span>
+                    </div>
+                    <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1.5 rounded-lg border border-gray-700">Pendiente</span>
                 </div>
 
             </div>
