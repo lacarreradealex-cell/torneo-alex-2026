@@ -95,14 +95,14 @@
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxFWrz0r94Rt5HcGwoCGSKwkChlJ_bZ925qQJd46GQSCohRPNfmVl7VkeCJDBkM_eQM4g/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzs0CCN0oIuM7n_hdxk9xZfq3-NvZ4Eb4DzbVIqQClD-Gi4US6tq7MGq7dON1R9h8bm4A/exec";
 
         async function cargarPartidos() {
             let contenedor = document.getElementById("lista-partidos");
             
             try {
                 let response = await fetch(WEB_APP_URL);
-                if (!response.ok) throw new Error("Error en la respuesta del servidor");
+                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
                 
                 let filas = await response.json();
                 contenedor.innerHTML = ""; 
@@ -114,22 +114,20 @@
 
                 let partidosEncontrados = 0;
 
-                // Empezamos desde i = 1 para saltarnos la cabecera (Fila 0)
+                // Empezamos desde i = 1 para saltarnos la cabecera
                 for (let i = 1; i < filas.length; i++) {
                     let fila = filas[i];
                     
-                    let pareja1  = fila[7];  // Columna H (Pareja gana / Equipo 1)
-                    let pareja2  = fila[8];  // Columna I (Pareja pierde / Equipo 2)
+                    let pareja1  = fila[7];  // Columna H (Pareja gana)
+                    let pareja2  = fila[8];  // Columna I (Pareja pierde)
                     let goles1   = fila[4];  // Columna E (Juegos pareja gana)
                     let goles2   = fila[5];  // Columna F (Juegos pareja pierde)
-                    let categoria= fila[1];  // Columna B (Categoría / Grupo por si quieres usarlo)
+                    let categoria= fila[1];  // Columna B (Categoría / Grupo)
 
-                    // Validamos que existan ambas parejas y que no sean textos vacíos
                     if (!pareja1 || !pareja2 || pareja1.toString().trim() === "" || pareja2.toString().trim() === "") continue;
 
                     partidosEncontrados++;
 
-                    // Comprobación de resultados válidos
                     let hayResultado = (goles1 !== "" && goles1 !== null && goles1 !== undefined && 
                                         goles2 !== "" && goles2 !== null && goles2 !== undefined &&
                                         !isNaN(goles1) && !isNaN(goles2));
@@ -154,12 +152,12 @@
                 }
 
                 if (partidosEncontrados === 0) {
-                    contenedor.innerHTML = `<div class="message-box">No se encontraron partidos registrados en las filas de datos.</div>`;
+                    contenedor.innerHTML = `<div class="message-box">No se encontraron partidos registrados en las filas.</div>`;
                 }
 
             } catch (error) {
                 console.error("Error de conexión:", error);
-                contenedor.innerHTML = `<div class="message-box" style="color: #ff477e;">Error al conectar con Google Sheets.</div>`;
+                contenedor.innerHTML = `<div class="message-box" style="color: #ff477e;">Error al conectar: ${error.message}</div>`;
             }
         }
 
