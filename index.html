@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partidos del Torneo</title>
+    <title>Diagnóstico de Conexión</title>
     <style>
         body {
             background-color: #0f111a;
@@ -24,124 +24,52 @@
             font-size: 1.1rem;
             letter-spacing: 1px;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .debug-card {
-            background-color: #1a1d2d;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 10px;
-            font-size: 0.8rem;
-            font-family: monospace;
-            word-break: break-all;
-            border-left: 4px solid #ff477e;
-        }
-        .match-card {
-            background-color: #1a1d2d;
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        .info-pista {
-            font-size: 0.75rem;
             color: #ff477e;
-            text-transform: uppercase;
-            font-weight: bold;
-            margin-bottom: 4px;
         }
-        .match-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
-        .team {
-            font-weight: bold;
-            font-size: 0.90rem;
-            width: 38%;
-            text-align: center;
-            word-break: break-word;
-        }
-        .score-pending {
-            background-color: #262a3d;
-            color: #8b92af;
-            padding: 8px 16px;
+        .error-box {
+            background-color: #1a1d2d;
+            border-left: 4px solid #ff477e;
             border-radius: 8px;
-            font-weight: bold;
-            font-size: 1rem;
-            letter-spacing: 2px;
-        }
-        .score-played {
-            background-color: #ccff00;
-            color: #0f111a;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1rem;
-        }
-        .message-box {
-            text-align: center;
-            color: #8b92af;
-            padding: 25px;
-            background: #1a1d2d;
-            border-radius: 12px;
-            font-size: 0.90rem;
+            padding: 20px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            color: #ff8fa3;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>⚔️ DIAGNÓSTICO DE COLUMNAS</h2>
-        <div id="lista-partidos">
-            <div class="message-box">Leyendo estructura del Excel...</div>
+        <h2>⚠️ ERROR DE CONEXIÓN DETECTADO</h2>
+        <div id="error-detalle" class="error-box">
+            Probando conexión con Google Apps Script...
         </div>
     </div>
 
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxFWrz0r94Rt5HcGwoCGSKwkChlJ_bZ925qQJd46GQSCohRPNfmVl7VkeCJDBkM_eQM4g/exec";
 
-        async function cargarPartidos() {
-            let contenedor = document.getElementById("lista-partidos");
-            
+        async function probarConexion() {
+            let cajaError = document.getElementById("error-detalle");
             try {
-                let response = await fetch(WEB_APP_URL);
-                let filas = await response.json();
-                contenedor.innerHTML = ""; 
-
-                if (!filas || filas.length === 0) {
-                    contenedor.innerHTML = `<div class="message-box">El documento está vacío.</div>`;
-                    return;
-                }
-
-                // Vamos a mostrar las primeras 10 filas de manera desglosada para ver exactamente qué hay en cada columna (índice 0, 1, 2...)
-                let htmlDebug = `<div class="message-box" style="margin-bottom: 15px; color: #ccff00;">Inspeccionando contenido de las celdas:</div>`;
+                let response = await fetch(WEB_APP_URL, { redirect: "follow" });
                 
-                for (let i = 0; i < Math.min(filas.length, 12); i++) {
-                    let fila = filas[i];
-                    // Filtramos para ver si alguna celda tiene contenido largo (como un nombre de pareja)
-                    let textoFila = fila.map((val, idx) => val !== "" ? `[Col ${idx}: ${val}]` : "").filter(Boolean).join(" ");
-                    
-                    if (textoFila.length > 0) {
-                        htmlDebug += `<div class="debug-card"><b>Fila ${i+1}:</b> ${textoFila}</div>`;
-                    }
+                if (!response.ok) {
+                    throw new Error(`El servidor respondió con estado HTTP: ${response.status} ${response.statusText}`);
                 }
-
-                contenedor.innerHTML = htmlDebug;
+                
+                let datos = await response.json();
+                cajaError.style.borderLeftColor = "#ccff00";
+                cajaError.style.color = "#ccff00";
+                cajaError.innerHTML = `¡Conexión exitosa! Se han leído ${datos.length} filas del Excel correctamente. El problema de CORS se ha superado.`;
 
             } catch (error) {
-                console.error("Error:", error);
-                contenedor.innerHTML = `<div class="message-box" style="color: #ff477e;">Error al conectar.</div>`;
+                cajaError.innerHTML = `<b>Error técnico capturado:</b><br><br>${error.message}<br><br><b>Causas probables:</b><br>- Asegúrate de que en Google Apps Script, al implementar, el acceso esté en <i>"Cualquier usuario"</i>.<br>- Comprueba que la función <i>doGet(e)</i> devuelva correctamente los datos en formato JSON.`;
             }
         }
 
-        cargarPartidos();
+        probarConexion();
     </script>
 
 </body>
