@@ -90,7 +90,7 @@
     <div class="container">
         <h2>⚔️ PARTIDOS DEL GRUPO</h2>
         <div id="lista-partidos">
-            <div class="empty-state">Sincronizando con Google Sheets...</div>
+            <div class="empty-state">Sincronizando partidos...</div>
         </div>
     </div>
 
@@ -105,33 +105,38 @@
                 let contenedor = document.getElementById("lista-partidos");
                 contenedor.innerHTML = ""; 
 
-                if (!filas || filas.length <= 1) {
-                    contenedor.innerHTML = `<div class="empty-state">El Excel devuelve datos vacíos o solo la cabecera.</div>`;
+                if (!filas || filas.length === 0) {
+                    contenedor.innerHTML = `<div class="empty-state">No se han encontrado datos en el Excel.</div>`;
                     return;
                 }
 
                 let partidosEncontrados = 0;
 
-                // Recorremos las filas del Excel
-                for (let i = 1; i < filas.length; i++) {
+                // En JavaScript las columnas empiezan en 0:
+                // Columna I = Índice 8 (Pareja 1)
+                // Columna J = Índice 9 (Hora)
+                // Columna K = Índice 10 (Resultado 1)
+                // Columna M = Índice 12 (Resultado 2)
+                // Columna N = Índice 13 (Pareja 2)
+
+                for (let i = 0; i < filas.length; i++) {
                     let fila = filas[i];
                     
-                    // --- CAMBIA ESTOS NÚMEROS SEGÚN EN QUÉ COLUMNA ESTÁ CADA COSA ---
-                    // [0] es la primera columna (A), [1] la B, [2] la C, [3] la D, [4] la E...
-                    let horaPista = fila[0] || "PISTA 35 · 10:00 H"; 
-                    let pareja1  = fila[1]; // Columna B
-                    let pareja2  = fila[2]; // Columna C
-                    let goles1   = fila[3]; // Columna D (Resultado 1)
-                    let goles2   = fila[4]; // Columna E (Resultado 2)
+                    let horaPista = fila[9];  // Columna J (Hora)
+                    let pareja1  = fila[8];  // Columna I (Pareja 1)
+                    let goles1   = fila[10]; // Columna K (Resultado 1)
+                    let goles2   = fila[12]; // Columna M (Resultado 2)
+                    let pareja2  = fila[13]; // Columna N (Pareja 2)
 
-                    // Si las columnas principales están vacías, probamos a saltar
-                    if (!pareja1 && !pareja2) continue;
+                    // Filtramos para asegurarnos de que cogemos solo las filas que tienen parejas asignadas
+                    if (!pareja1 || !pareja2 || pareja1 === "EQUIPO" || pareja1 === "PARTIDOS") continue;
 
                     partidosEncontrados++;
 
-                    // Comprobamos si hay resultado introducido
+                    // Comprobación de si hay resultado introducido
                     let hayResultado = (goles1 !== "" && goles1 !== null && goles1 !== undefined && 
-                                        goles2 !== "" && goles2 !== null && goles2 !== undefined);
+                                        goles2 !== "" && goles2 !== null && goles2 !== undefined &&
+                                        !isNaN(goles1) && !isNaN(goles2));
                     
                     let htmlMarcador = hayResultado 
                         ? `<div class="score-played">${goles1}-${goles2}</div>` 
@@ -141,11 +146,11 @@
                     tarjeta.className = "match-card";
                     tarjeta.innerHTML = `
                         <div style="width: 100%;">
-                            <div class="info-pista">📍 ${horaPista}</div>
+                            <div class="info-pista">📍 ${horaPista || "PARTIDO"}</div>
                             <div class="match-content">
-                                <span class="team">${pareja1 || "Por definir"}</span>
+                                <span class="team">${pareja1}</span>
                                 ${htmlMarcador}
-                                <span class="team">${pareja2 || "Por definir"}</span>
+                                <span class="team">${pareja2}</span>
                             </div>
                         </div>
                     `;
@@ -153,12 +158,12 @@
                 }
 
                 if (partidosEncontrados === 0) {
-                    contenedor.innerHTML = `<div class="empty-state">Se leyeron ${filas.length} filas pero ninguna tiene formato de partido válido. Revisa el orden de las columnas.</div>`;
+                    contenedor.innerHTML = `<div class="empty-state">El Excel está vacío de partidos en este momento. Se muestra limpio.</div>`;
                 }
 
             } catch (error) {
                 console.error("Error al sincronizar con Google Sheets:", error);
-                document.getElementById("lista-partidos").innerHTML = `<div class="empty-state" style="color: #ff477e;">Error al conectar con la API de Google.</div>`;
+                document.getElementById("lista-partidos").innerHTML = `<div class="empty-state" style="color: #ff477e;">Error al conectar con la API.</div>`;
             }
         }
 
